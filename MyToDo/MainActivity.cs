@@ -30,7 +30,7 @@ namespace MyToDo
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // Get our button from the layout resource,
+            // change
 
             addMove = FindViewById<Button>(Resource.Id.moveAdd);
             addMove.Click += delegate
