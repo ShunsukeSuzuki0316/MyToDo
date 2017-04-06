@@ -9,6 +9,7 @@ namespace MyToDo
     {
         public override void OnReceive(Context context, Intent intent)
         {
+            //change
             var message = intent.GetStringExtra("message");
             var title = intent.GetStringExtra("title");
 
