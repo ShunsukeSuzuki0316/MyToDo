@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
@@ -50,9 +47,8 @@ namespace MyToDo
             alertTimePicker = FindViewById<TimePicker>(Resource.Id.alertTimePicker);
             completed = FindViewById<Switch>(Resource.Id.completed);
 
-
             alertDatePicker.Visibility = ViewStates.Invisible;
-            alertDatePicker.UpdateDate(DateTime.Today.Year,DateTime.Today.Month,DateTime.Today.Day);
+            alertDatePicker.UpdateDate(DateTime.Today.Year,DateTime.Today.Month - 1,DateTime.Today.Day);
             alertTimePicker.Visibility = ViewStates.Invisible;
 
 
@@ -80,7 +76,7 @@ namespace MyToDo
                 if(todo.alertTime != null)
                 {
                     DateTime time = todo.alertTime;
-                    alertDatePicker.UpdateDate(time.Year, time.Month, time.Day);
+                    alertDatePicker.UpdateDate(time.Year, (time.Month - 1), time.Day);
                     alertTimePicker.CurrentHour = (Java.Lang.Integer)time.Hour;
                     alertTimePicker.CurrentMinute = (Java.Lang.Integer)time.Minute;
                 }
@@ -146,6 +142,9 @@ namespace MyToDo
                 }
 
                 TODO.updateTODO(todo);
+
+                Remind(todo);
+
                 var next = new Intent(this, typeof(MainActivity));
                 StartActivity(next);
             };
@@ -154,14 +153,35 @@ namespace MyToDo
         public void Remind(TODO todo)
         {
 
+            var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+
+            try
+            {
+                var deletAlarmIntent = new Intent(this, typeof(AlarmReceiver));
+                var deletePending = PendingIntent.GetBroadcast(this, todo.id, deletAlarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                deletePending.Cancel();
+                alarmManager.Cancel(deletePending);
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+
+            }
+
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+            
+
             alarmIntent.PutExtra("title", todo.name);
             alarmIntent.PutExtra("message", todo.description);
 
-            var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var pending = PendingIntent.GetBroadcast(this, todo.id, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-            var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-            alarmManager.Set(AlarmType.ElapsedRealtime, todo.alertTime.Ticks * 1000, pending);
+
+            TimeSpan ts = todo.alertTime - DateTime.Now;
+
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + ((long)ts.TotalMilliseconds ), pending);
 
         }
     }

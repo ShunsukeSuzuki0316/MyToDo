@@ -14,48 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/moveAdd" />
-    <ScrollView
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="600px"
-        android:id="@+id/scrollView1">
-        <TableLayout
-            android:stretchColumns="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tableLayout1">
-            <ListView
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/incompleteList" />
-        </TableLayout>
-    </ScrollView>
-    <TextView
-        android:text="完了したタスク"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-    <ScrollView
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="600px"
-        android:id="@+id/scrollView2">
-        <TableLayout
-            android:stretchColumns="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tableLayout2">
             <ListView
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/completeList" />
-        </TableLayout>
-    </ScrollView>
+                android:id="@+id/incompleteList" />
 </LinearLayout>

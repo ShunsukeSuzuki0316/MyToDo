@@ -1,11 +1,8 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Java.Lang;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -17,9 +14,6 @@ namespace MyToDo
 
         ListView incompleteList;
         List<TODO> todoList = new List<TODO>();
-
-        ListView completeList;
-        List<TODO> completeTodoList = new List<TODO>();
 
         Button addMove;
 
@@ -52,22 +46,6 @@ namespace MyToDo
                 StartActivity(next);
 
             };
-
-            completeList = FindViewById<ListView>(Resource.Id.completeList);
-            var comleteTODOs = TODO.getTODO().Where(todo => todo.completed).ToList();
-            var completeAdapter = new CustomAdapter(this, comleteTODOs);
-            completeList.Adapter = completeAdapter;
-            completeList.ItemClick += (sender, e) =>
-            {
-
-                var next = new Intent(this, typeof(TODODetailActivity));
-                var target = (ListView)sender;
-                next.PutExtra("targetTODO", completeAdapter[e.Position].id);
-                StartActivity(next);
-
-            };
-
-
         }
     }
 
