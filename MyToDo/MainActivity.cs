@@ -1,80 +1,60 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace MyToDo
 {
     [Activity(Label = "MyToDo", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-
-        ListView incompleteList;
-        List<TODO> todoList = new List<TODO>();
-
-        Button addMove;
+        private Button _addMove;
+        private ListView _incompleteList;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // change
-
-            addMove = FindViewById<Button>(Resource.Id.moveAdd);
-            addMove.Click += delegate
+            _addMove = FindViewById<Button>(Resource.Id.moveAdd);
+            _addMove.Click += delegate
             {
-                var next = new Intent(this, typeof(TODODetailActivity));
+                var next = new Intent(this, typeof(TodoDetailActivity));
                 StartActivity(next);
             };
 
 
-            incompleteList = FindViewById<ListView>(Resource.Id.incompleteList);
-            var incomleteTODOs = TODO.getTODO().Where(todo=>!todo.completed).ToList();
-            var adapter = new CustomAdapter(this, incomleteTODOs);
-            incompleteList.Adapter = adapter;
-            incompleteList.ItemClick += (sender,e) => {
-
-                var next = new Intent(this, typeof(TODODetailActivity));
-                var target = (ListView)sender;
-                next.PutExtra("targetTODO", adapter[e.Position].id);
+            _incompleteList = FindViewById<ListView>(Resource.Id.incompleteList);
+            var incomleteTodOs = Todo.GetTodo().Where(todo => !todo.Completed).ToList();
+            var adapter = new CustomAdapter(this, incomleteTodOs);
+            _incompleteList.Adapter = adapter;
+            _incompleteList.ItemClick += (sender, e) =>
+            {
+                var next = new Intent(this, typeof(TodoDetailActivity));
+                next.PutExtra("targetTODO", adapter[e.Position].Id);
                 StartActivity(next);
-
             };
         }
     }
 
-    public class CustomAdapter : BaseAdapter<TODO>
+    public class CustomAdapter : BaseAdapter<Todo>
     {
-        List<TODO> todoList;
-        Activity context;
+        private readonly Activity _context;
+        private readonly List<Todo> _todoList;
 
-        public CustomAdapter(Activity context, List<TODO> items) : base()
+        public CustomAdapter(Activity context, List<Todo> items)
         {
-            this.context = context;
-            this.todoList = items;
+            _context = context;
+            _todoList = items;
         }
 
-        public override TODO this[int position]
-        {
-            get
-            {
-                return todoList[position];
-            }
-        }
+        public override Todo this[int position] => _todoList[position];
 
-        public override int Count
-        {
-            get
-            {
-                return todoList.Count;
-            }
-        }
+        public override int Count => _todoList.Count;
 
         public override long GetItemId(int position)
         {
@@ -83,19 +63,14 @@ namespace MyToDo
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            TODO item = this[position];
+            var item = this[position];
 
-            View view = convertView;
-            if (view == null) // no view to re-use, create new
-           
-                view = context.LayoutInflater.Inflate(Resource.Layout.todoCell,parent,false);
+            var view = convertView ?? _context.LayoutInflater.Inflate(Resource.Layout.todoCell, parent, false);
 
             // BaseAdapter<T>の対応するプロパティを割り当て
-            view.FindViewById<TextView>(Resource.Id.todoName).Text = item.name;
+            view.FindViewById<TextView>(Resource.Id.todoName).Text = item.Name;
 
             return view;
         }
     }
-
 }
-

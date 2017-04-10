@@ -1,81 +1,85 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SQLite;
-using System.IO;
 
 namespace MyToDo
 {
     [Table("todo")]
-    public class TODO
+    public class Todo
     {
-        [AutoIncrement,PrimaryKey,Column("_id")]
-        public int id { get; set; }
-        [Column("_name")]
-        public string name { get; set; }
-        [Column("_description")]
-        public string description { get; set; }
-        [Column("_completed")]
-        public bool completed { get; set; }
-        [Column("_alert")]
-        public bool alert { get; set; }
-        [Column("_alertTime")]
-        public DateTime alertTime { get; set; }
-        [Column("_completedTime")]
-        public DateTime completedDate { get; set; }
+        private static readonly string DbPath;
 
-
-        private static string dbPath;
-
-        static TODO()
+        static Todo()
         {
-            dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "mytodo.db3");
+            DbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "mytodo.db3");
 
-            using (SQLiteConnection con = new SQLiteConnection(dbPath))
+            using (var con = new SQLiteConnection(DbPath))
             {
-                con.CreateTable<TODO>();
+                con.CreateTable<Todo>();
             }
         }
 
+        [AutoIncrement]
+        [PrimaryKey]
+        [Column("_id")]
+        public int Id { get; set; }
 
-        public static List<TODO> getTODO()
+        [Column("_name")]
+        public string Name { get; set; }
+
+        [Column("_description")]
+        public string Description { get; set; }
+
+        [Column("_completed")]
+        public bool Completed { get; set; }
+
+        [Column("_alert")]
+        public bool Alert { get; set; }
+
+        [Column("_alertTime")]
+        public DateTime AlertTime { get; set; }
+
+        [Column("_completedTime")]
+        public DateTime CompletedDate { get; set; }
+
+
+        public static List<Todo> GetTodo()
         {
-
-            using (SQLiteConnection con = new SQLiteConnection(dbPath))
+            using (var con = new SQLiteConnection(DbPath))
             {
-                var result = from record in con.Table<TODO>() select record;
-                var resultList = result.Count() != 0 ? result.ToList() : new List<TODO>();
+                var result = from record in con.Table<Todo>() select record;
+                var resultList = result.Count() != 0 ? result.ToList() : new List<Todo>();
                 return resultList;
             }
         }
 
-        public static TODO getTODOById(int id)
+        public static Todo GetTodoById(int id)
         {
-            using (SQLiteConnection con = new SQLiteConnection(dbPath))
+            using (var con = new SQLiteConnection(DbPath))
             {
-                var result = from record in con.Table<TODO>() where record.id == id select record;
+                var result = from record in con.Table<Todo>() where record.Id == id select record;
 
-                return result.First();   
+                return result.First();
             }
         }
 
-        public static int addTODO(TODO todo)
+        public static int AddTodo(Todo todo)
         {
-
-            using (SQLiteConnection con = new SQLiteConnection(dbPath))
+            using (var con = new SQLiteConnection(DbPath))
             {
                 var res = con.Insert(todo);
                 return res;
             }
         }
 
-        public static int updateTODO(TODO todo)
+        public static int UpdateTodo(Todo todo)
         {
-            using (SQLiteConnection con = new SQLiteConnection(dbPath))
+            using (var con = new SQLiteConnection(DbPath))
             {
                 return con.Update(todo);
             }
         }
-
     }
 }

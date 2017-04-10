@@ -1,188 +1,190 @@
 using System;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Java.Lang;
+using Exception = System.Exception;
 
 namespace MyToDo
 {
     [Activity(Label = "TODODetailActivity")]
-    public class TODODetailActivity : Activity
+    public class TodoDetailActivity : Activity
     {
-        Button addButton;
-        Button updateButton;
-        Button returnButton;
+        private Button _addButton;
+        private Button _updateButton;
+        private Button _returnButton;
 
-        EditText todoName;
-        EditText todoDescription;
+        private EditText _todoName;
+        private EditText _todoDescription;
 
-        Switch alert;
-        DatePicker alertDatePicker;
-        TimePicker alertTimePicker;
+        private Switch _alert;
+        private DatePicker _alertDatePicker;
+        private TimePicker _alertTimePicker;
 
-        Switch completed;
+        private Switch _completed;
 
-        TODO todo;
+        private Todo _todo;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.todoDetail);
 
-            // Create your application here
-            int id = Intent.GetIntExtra("targetTODO",-1);
+            var id = Intent.GetIntExtra("targetTODO", -1);
 
-            addButton = FindViewById<Button>(Resource.Id.addButton);
-            updateButton = FindViewById<Button>(Resource.Id.updateButton);
-            returnButton = FindViewById<Button>(Resource.Id.returnButton);
-            todoName = FindViewById<EditText>(Resource.Id.todoName);
-            todoDescription = FindViewById<EditText>(Resource.Id.todoDescription);
-            alert = FindViewById<Switch>(Resource.Id.alert);
-            alertDatePicker = FindViewById<DatePicker>(Resource.Id.alertDatePicker);
-            alertTimePicker = FindViewById<TimePicker>(Resource.Id.alertTimePicker);
-            completed = FindViewById<Switch>(Resource.Id.completed);
+            _addButton = FindViewById<Button>(Resource.Id.addButton);
+            _updateButton = FindViewById<Button>(Resource.Id.updateButton);
+            _returnButton = FindViewById<Button>(Resource.Id.returnButton);
+            _todoName = FindViewById<EditText>(Resource.Id.todoName);
+            _todoDescription = FindViewById<EditText>(Resource.Id.todoDescription);
+            _alert = FindViewById<Switch>(Resource.Id.alert);
+            _alertDatePicker = FindViewById<DatePicker>(Resource.Id.alertDatePicker);
+            _alertTimePicker = FindViewById<TimePicker>(Resource.Id.alertTimePicker);
+            _completed = FindViewById<Switch>(Resource.Id.completed);
 
-            alertDatePicker.Visibility = ViewStates.Invisible;
-            alertDatePicker.UpdateDate(DateTime.Today.Year,DateTime.Today.Month - 1,DateTime.Today.Day);
-            alertTimePicker.Visibility = ViewStates.Invisible;
+            _alertDatePicker.Visibility = ViewStates.Invisible;
+            _alertDatePicker.UpdateDate(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day);
+            _alertTimePicker.Visibility = ViewStates.Invisible;
 
 
-            alert.CheckedChange += (sender, e) => {
-                if (alert.Checked)
+            _alert.CheckedChange += (sender, e) =>
+            {
+                if (_alert.Checked)
                 {
-                    alertDatePicker.Visibility = ViewStates.Visible;
-                    alertTimePicker.Visibility = ViewStates.Visible;
-                }else
-                {
-                    alertDatePicker.Visibility = ViewStates.Invisible;
-                    alertTimePicker.Visibility = ViewStates.Invisible;
+                    _alertDatePicker.Visibility = ViewStates.Visible;
+                    _alertTimePicker.Visibility = ViewStates.Visible;
                 }
-
+                else
+                {
+                    _alertDatePicker.Visibility = ViewStates.Invisible;
+                    _alertTimePicker.Visibility = ViewStates.Invisible;
+                }
             };
 
-            if(id != -1)
+            if (id != -1)
             {
-                todo = TODO.getTODOById(id);
-                addButton.Visibility = ViewStates.Invisible;
-                todoName.Text = todo.name;
-                todoDescription.Text = todo.description;
-                completed.Checked = todo.completed;
-                alert.Checked = todo.alert;
-                if(todo.alertTime != null)
+                _todo = Todo.GetTodoById(id);
+                _addButton.Visibility = ViewStates.Invisible;
+                _todoName.Text = _todo.Name;
+                _todoDescription.Text = _todo.Description;
+                _completed.Checked = _todo.Completed;
+                _alert.Checked = _todo.Alert;
+                if (_todo.Alert)
                 {
-                    DateTime time = todo.alertTime;
-                    alertDatePicker.UpdateDate(time.Year, (time.Month - 1), time.Day);
-                    alertTimePicker.CurrentHour = (Java.Lang.Integer)time.Hour;
-                    alertTimePicker.CurrentMinute = (Java.Lang.Integer)time.Minute;
+                    var time = _todo.AlertTime;
+                    _alertDatePicker.UpdateDate(time.Year, time.Month - 1, time.Day);
+                    _alertTimePicker.CurrentHour = (Integer) time.Hour;
+                    _alertTimePicker.CurrentMinute = (Integer) time.Minute;
                 }
-             
-                
-            }else
+            }
+            else
             {
-                updateButton.Visibility = ViewStates.Invisible;
-                completed.Visibility = ViewStates.Invisible;
+                _updateButton.Visibility = ViewStates.Invisible;
+                _completed.Visibility = ViewStates.Invisible;
 
-                alert.Checked = false;
+                _alert.Checked = false;
 
-                addButton.Click += delegate {
-                    var targetTODO = new TODO { name = todoName.Text, description = todoDescription.Text, completed = completed.Checked };
-
-                    if (alert.Checked)
+                _addButton.Click += delegate
+                {
+                    var targetTodo = new Todo
                     {
-                        DateTime newDate = new DateTime();
-                        newDate = alertDatePicker.DateTime;
-                        TimeSpan span = new TimeSpan(alertTimePicker.CurrentHour.IntValue(), alertTimePicker.CurrentMinute.IntValue(), 0);
-                        targetTODO.alertTime = newDate + span;
-                        targetTODO.alert = true;
-                    }else
+                        Name = _todoName.Text,
+                        Description = _todoDescription.Text,
+                        Completed = _completed.Checked
+                    };
+
+                    if (_alert.Checked)
                     {
-                        targetTODO.alert = false;
+                        var newDate = _alertDatePicker.DateTime;
+                        var span = new TimeSpan(_alertTimePicker.CurrentHour.IntValue(),
+                            _alertTimePicker.CurrentMinute.IntValue(), 0);
+                        targetTodo.AlertTime = newDate + span;
+                        targetTodo.Alert = true;
+                    }
+                    else
+                    {
+                        targetTodo.Alert = false;
                     }
 
-                    TODO.addTODO(targetTODO);
+                    Todo.AddTodo(targetTodo);
 
-                    Remind(targetTODO);
+                    Remind(targetTodo);
 
                     var next = new Intent(this, typeof(MainActivity));
                     StartActivity(next);
                 };
             }
 
-            returnButton.Click += delegate {
-
+            _returnButton.Click += delegate
+            {
                 var next = new Intent(this, typeof(MainActivity));
                 StartActivity(next);
-
             };
 
-            updateButton.Click += delegate
+            _updateButton.Click += delegate
             {
+                _todo.Name = _todoName.Text;
+                _todo.Description = _todoDescription.Text;
+                _todo.Completed = _completed.Checked;
 
-                todo.name = todoName.Text;
-                todo.description = todoDescription.Text;
-                todo.completed = completed.Checked;
-
-                if (alert.Checked)
+                if (_alert.Checked)
                 {
-                    DateTime newDate = new DateTime();
-                    newDate = alertDatePicker.DateTime;
-                    TimeSpan span = new TimeSpan(alertTimePicker.CurrentHour.IntValue(), alertTimePicker.CurrentMinute.IntValue(),0);
-                    
-                    todo.alertTime = newDate+span;
-                    todo.alert = true;
+                    var newDate = _alertDatePicker.DateTime;
+                    var span = new TimeSpan(_alertTimePicker.CurrentHour.IntValue(),
+                        _alertTimePicker.CurrentMinute.IntValue(), 0);
+
+                    _todo.AlertTime = newDate + span;
+                    _todo.Alert = true;
                 }
                 else
                 {
-                    todo.alert = false;
+                    _todo.Alert = false;
                 }
 
-                TODO.updateTODO(todo);
+                Todo.UpdateTodo(_todo);
 
-                Remind(todo);
+                Remind(_todo);
 
                 var next = new Intent(this, typeof(MainActivity));
                 StartActivity(next);
             };
-
         }
-        public void Remind(TODO todo)
-        {
 
+        public void Remind(Todo todo)
+        {
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
 
             try
             {
                 var deletAlarmIntent = new Intent(this, typeof(AlarmReceiver));
-                var deletePending = PendingIntent.GetBroadcast(this, todo.id, deletAlarmIntent, PendingIntentFlags.UpdateCurrent);
+                var deletePending =
+                    PendingIntent.GetBroadcast(this, todo.Id, deletAlarmIntent, PendingIntentFlags.UpdateCurrent);
 
                 deletePending.Cancel();
                 alarmManager.Cancel(deletePending);
-
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
-
             }
 
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            
-
-            alarmIntent.PutExtra("title", todo.name);
-            alarmIntent.PutExtra("message", todo.description);
-
-            var pending = PendingIntent.GetBroadcast(this, todo.id, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
 
-            TimeSpan ts = todo.alertTime - DateTime.Now;
+            alarmIntent.PutExtra("title", todo.Name);
+            alarmIntent.PutExtra("message", todo.Description);
 
-            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + ((long)ts.TotalMilliseconds ), pending);
+            var pending = PendingIntent.GetBroadcast(this, todo.Id, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
+
+            var ts = todo.AlertTime - DateTime.Now;
+
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + (long) ts.TotalMilliseconds,
+                pending);
         }
     }
 }
