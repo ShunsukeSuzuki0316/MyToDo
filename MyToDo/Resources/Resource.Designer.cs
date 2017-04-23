@@ -60,32 +60,23 @@ namespace MyToDo
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f05000f
-			public const int addButton = 2131034127;
+			// aapt resource value: 0x7f050001
+			public const int addTodoButton = 2131034113;
+			
+			// aapt resource value: 0x7f05000a
+			public const int completedSwitch = 2131034122;
 			
 			// aapt resource value: 0x7f050009
-			public const int alert = 2131034121;
-			
-			// aapt resource value: 0x7f05000b
-			public const int alertDatePicker = 2131034123;
-			
-			// aapt resource value: 0x7f05000c
-			public const int alertTimePicker = 2131034124;
-			
-			// aapt resource value: 0x7f05000e
-			public const int completed = 2131034126;
-			
-			// aapt resource value: 0x7f050002
-			public const int incompleteList = 2131034114;
+			public const int completedTextView = 2131034121;
 			
 			// aapt resource value: 0x7f050003
 			public const int linearLayout1 = 2131034115;
 			
-			// aapt resource value: 0x7f050001
-			public const int moveAdd = 2131034113;
+			// aapt resource value: 0x7f05000c
+			public const int returnButton = 2131034124;
 			
-			// aapt resource value: 0x7f050011
-			public const int returnButton = 2131034129;
+			// aapt resource value: 0x7f05000b
+			public const int saveButton = 2131034123;
 			
 			// aapt resource value: 0x7f050005
 			public const int scrollView1 = 2131034117;
@@ -96,23 +87,17 @@ namespace MyToDo
 			// aapt resource value: 0x7f050000
 			public const int textView1 = 2131034112;
 			
-			// aapt resource value: 0x7f05000d
-			public const int textView3 = 2131034125;
-			
 			// aapt resource value: 0x7f050008
-			public const int textView7 = 2131034120;
+			public const int todoDescriptionEditText = 2131034120;
 			
-			// aapt resource value: 0x7f05000a
-			public const int textView8 = 2131034122;
-			
-			// aapt resource value: 0x7f050007
-			public const int todoDescription = 2131034119;
+			// aapt resource value: 0x7f050002
+			public const int todoListView = 2131034114;
 			
 			// aapt resource value: 0x7f050004
 			public const int todoName = 2131034116;
 			
-			// aapt resource value: 0x7f050010
-			public const int updateButton = 2131034128;
+			// aapt resource value: 0x7f050007
+			public const int todoNameEditText = 2131034119;
 			
 			static Id()
 			{

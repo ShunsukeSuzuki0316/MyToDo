@@ -11,8 +11,8 @@ namespace MyToDo
     [Activity(Label = "MyToDo", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private Button _addMove;
-        private ListView _incompleteList;
+        private Button _addTodoButton; // 追加ボタン
+        private ListView _todoListView; // TODOリスト
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -20,19 +20,29 @@ namespace MyToDo
 
             SetContentView(Resource.Layout.Main);
 
-            _addMove = FindViewById<Button>(Resource.Id.moveAdd);
-            _addMove.Click += delegate
+
+            // axmlファイルから構成要素を探します
+            _addTodoButton = FindViewById<Button>(Resource.Id.addTodoButton);
+            _todoListView  = FindViewById<ListView>(Resource.Id.todoListView);
+            
+
+            // テーブルから完了していないタスクの一覧を取得します
+            var incomleteTodOs = Todo.GetTodo().Where(todo => !todo.Completed).ToList();
+
+            // リストを制御するためのアダプターを設定します
+            var adapter = new CustomAdapter(this, incomleteTodOs);
+            _todoListView.Adapter = adapter;
+
+
+            // 追加ボタンをタップした時に実行するアクション
+            _addTodoButton.Click += delegate
             {
                 var next = new Intent(this, typeof(TodoDetailActivity));
                 StartActivity(next);
             };
 
-
-            _incompleteList = FindViewById<ListView>(Resource.Id.incompleteList);
-            var incomleteTodOs = Todo.GetTodo().Where(todo => !todo.Completed).ToList();
-            var adapter = new CustomAdapter(this, incomleteTodOs);
-            _incompleteList.Adapter = adapter;
-            _incompleteList.ItemClick += (sender, e) =>
+            // リストのアイテムをタップした時のアクション
+            _todoListView.ItemClick += (sender, e) =>
             {
                 var next = new Intent(this, typeof(TodoDetailActivity));
                 next.PutExtra("targetTODO", adapter[e.Position].Id);
@@ -43,8 +53,8 @@ namespace MyToDo
 
     public class CustomAdapter : BaseAdapter<Todo>
     {
-        private readonly Activity _context;
-        private readonly List<Todo> _todoList;
+        private readonly Activity _context; // リストを使用するActivity
+        private readonly List<Todo> _todoList; // リストで使用するデータ
 
         public CustomAdapter(Activity context, List<Todo> items)
         {
@@ -52,15 +62,35 @@ namespace MyToDo
             _todoList = items;
         }
 
+        /// <summary>
+        /// リストに使用するデータのインデクサー
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public override Todo this[int position] => _todoList[position];
 
+        /// <summary>
+        /// リストの件数 = データの件数
+        /// </summary>
         public override int Count => _todoList.Count;
 
+        /// <summary>
+        /// タップしたアイテムのインデックスを取得します
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public override long GetItemId(int position)
         {
             return position;
         }
 
+        /// <summary>
+        /// リストのアイテムに表示するものを設定します　
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="convertView"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var item = this[position];

@@ -1,92 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ScrollView
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="600px"
-        android:id="@+id/scrollView1">
-        <TableLayout
-            android:stretchColumns="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tableLayout1">
-            <TextView
-                android:text="TODO名"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView1" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:id="@+id/todoName" />
-            <TextView
-                android:text="TODO内容"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView1"
-                android:layout_marginTop="20.0dp" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/todoDescription" />
-          <TextView
-                android:text="アラート"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView7" />
-          <Switch
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/alert"
-              android:layout_marginLeft="41.5dp" />
-          <TextView
-              android:text="アラート時間"
-              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/textView8" />
-          <DatePicker
-              android:id="@+id/alertDatePicker"
-              android:datePickerMode="spinner"
-              android:calendarViewShown="false"
-              android:spinnersShown="true" />
-          <TimePicker
-              android:id="@+id/alertTimePicker"
-              android:timePickerMode="spinner" />
-            <TextView
-                android:text="完了"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3" />
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/completed"
-                android:layout_marginLeft="41.5dp" />
-        </TableLayout>
-    </ScrollView>
-    <Button
-        android:text="追加"
+              android:layout_height="match_parent">
+  <ScrollView
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="600px"
+    android:id="@+id/scrollView1">
+    <TableLayout
+      android:stretchColumns="1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/tableLayout1">
+      <TextView
+        android:text="TODO名"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addButton" />
-    <Button
-        android:text="更新"
+        android:id="@+id/textView1" />
+      <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/updateButton" />
-    <Button
-        android:text="戻る"
+        android:inputType="text"
+        android:id="@+id/todoNameEditText" />
+      <TextView
+        android:text="TODO内容"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/returnButton" />
+        android:id="@+id/textView1"
+        android:layout_marginTop="20.0dp" />
+      <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/todoDescriptionEditText" />
+      <TextView
+        android:text="完了"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/completedTextView" />
+      <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/completedSwitch" />
+    </TableLayout>
+  </ScrollView>
+  <Button
+    android:text="保存"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/saveButton" />
+  <Button
+    android:text="戻る"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/returnButton" />
 </LinearLayout>

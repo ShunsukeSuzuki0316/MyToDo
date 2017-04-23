@@ -11,40 +11,44 @@ namespace MyToDo
     {
         private static readonly string DbPath;
 
+        /// <summary>
+        /// TODOの静的コンストラクタ
+        /// </summary>
         static Todo()
         {
+            // TODOテーブルを格納するデータベースを作成します
             DbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "mytodo.db3");
 
             using (var con = new SQLiteConnection(DbPath))
             {
+                con.DropTable<Todo>();
+                // TODOテーブルを作成します(テーブルがある場合は何も処理しません)
                 con.CreateTable<Todo>();
             }
         }
 
+        // TODOのID
         [AutoIncrement]
         [PrimaryKey]
         [Column("_id")]
         public int Id { get; set; }
 
+        // TODOの名前
         [Column("_name")]
         public string Name { get; set; }
 
+        // TODOの詳細
         [Column("_description")]
         public string Description { get; set; }
 
+        // TODOの完了フラグ
         [Column("_completed")]
         public bool Completed { get; set; }
-
-        [Column("_alert")]
-        public bool Alert { get; set; }
-
-        [Column("_alertTime")]
-        public DateTime AlertTime { get; set; }
-
-        [Column("_completedTime")]
-        public DateTime CompletedDate { get; set; }
-
-
+        
+        /// <summary>
+        /// TODOテーブルからTODOを全件取得します
+        /// </summary>
+        /// <returns></returns>
         public static List<Todo> GetTodo()
         {
             using (var con = new SQLiteConnection(DbPath))
@@ -55,6 +59,11 @@ namespace MyToDo
             }
         }
 
+        /// <summary>
+        /// TODOをIDから取得します
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Todo GetTodoById(int id)
         {
             using (var con = new SQLiteConnection(DbPath))
@@ -65,6 +74,11 @@ namespace MyToDo
             }
         }
 
+        /// <summary>
+        /// TODOを新規登録します
+        /// </summary>
+        /// <param name="todo"></param>
+        /// <returns></returns>
         public static int AddTodo(Todo todo)
         {
             using (var con = new SQLiteConnection(DbPath))
@@ -74,6 +88,11 @@ namespace MyToDo
             }
         }
 
+        /// <summary>
+        /// TODOを更新します
+        /// </summary>
+        /// <param name="todo"></param>
+        /// <returns></returns>
         public static int UpdateTodo(Todo todo)
         {
             using (var con = new SQLiteConnection(DbPath))
