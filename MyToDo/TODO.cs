@@ -21,7 +21,6 @@ namespace MyToDo
 
             using (var con = new SQLiteConnection(DbPath))
             {
-                con.DropTable<Todo>();
                 // TODOテーブルを作成します(テーブルがある場合は何も処理しません)
                 con.CreateTable<Todo>();
             }
