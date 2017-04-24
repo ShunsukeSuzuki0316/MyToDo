@@ -23,14 +23,14 @@ namespace MyToDo
 
             // axmlファイルから構成要素を探します
             _addTodoButton = FindViewById<Button>(Resource.Id.addTodoButton);
-            _todoListView  = FindViewById<ListView>(Resource.Id.todoListView);
-            
+            _todoListView = FindViewById<ListView>(Resource.Id.todoListView);
+
 
             // テーブルから完了していないタスクの一覧を取得します
-            var incomleteTodOs = Todo.GetTodo().Where(todo => !todo.Completed).ToList();
+            var todoList = Todo.GetTodo().Where(todo => !todo.Completed).ToList();
 
             // リストを制御するためのアダプターを設定します
-            var adapter = new CustomAdapter(this, incomleteTodOs);
+            var adapter = new CustomAdapter(this, todoList);
             _todoListView.Adapter = adapter;
 
 
@@ -63,19 +63,19 @@ namespace MyToDo
         }
 
         /// <summary>
-        /// リストに使用するデータのインデクサー
+        ///     リストに使用するデータのインデクサー
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
         public override Todo this[int position] => _todoList[position];
 
         /// <summary>
-        /// リストの件数 = データの件数
+        ///     リストの件数 = データの件数
         /// </summary>
         public override int Count => _todoList.Count;
 
         /// <summary>
-        /// タップしたアイテムのインデックスを取得します
+        ///     タップしたアイテムのインデックスを取得します
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace MyToDo
         }
 
         /// <summary>
-        /// リストのアイテムに表示するものを設定します　
+        ///     リストのアイテムに表示するものを設定します
         /// </summary>
         /// <param name="position"></param>
         /// <param name="convertView"></param>
@@ -99,7 +99,7 @@ namespace MyToDo
             // リストのアイテムにaxmlファイルで作成した内容を設定します
             var view = convertView ?? _context.LayoutInflater.Inflate(Resource.Layout.todoCell, parent, false);
 
-           
+
             // テキストビューにTODO名を設定します
             view.FindViewById<TextView>(Resource.Id.todoName).Text = item.Name;
 
