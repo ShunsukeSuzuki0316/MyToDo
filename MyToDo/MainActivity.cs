@@ -95,9 +95,12 @@ namespace MyToDo
         {
             var item = this[position];
 
+
+            // リストのアイテムにaxmlファイルで作成した内容を設定します
             var view = convertView ?? _context.LayoutInflater.Inflate(Resource.Layout.todoCell, parent, false);
 
-            // BaseAdapter<T>の対応するプロパティを割り当て
+           
+            // テキストビューにTODO名を設定します
             view.FindViewById<TextView>(Resource.Id.todoName).Text = item.Name;
 
             return view;
